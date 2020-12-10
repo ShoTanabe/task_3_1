@@ -5,13 +5,92 @@
     <title></title>
   </head>
   <body>
+    <h1>ToDoリスト</h1>
+    <form caction="index.html" method="post">
+      <div id="radioarea">
+        <input type="radio" name="status" value="すべて" checked>すべて
+        <input type="radio" name="status" value="作業中">作業中
+        <input type="radio" name="status" value="完了">完了
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>コメント</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody id="todolistarea">
 
+        </tbody>
+      </table>
+      <div id="textboxarea">
+        <p style="font-weight:bold;">新規タスクの追加</p>
+        <input id="task" type="text" name="task">
+        <input type="button" value="追加" id="btn">
+      </div>
+    </form>
 
     <script type="text/javascript">
 
-    
-    </script>
+      const toDoListArea = document.getElementById('todolistarea');
+      const task = document.getElementById('task');
+      const taskList = [];
+      let countBtnClick = 0;
 
+        document.getElementById('btn').addEventListener('click', () => {
+
+          //IDとタスクをオブジェクトとして指定、クリックごとに配列に追加
+          const newTask = {number:countBtnClick, taskName:task.value};
+          taskList.push(newTask);
+          countBtnClick++;
+
+          //テーブルに新しい行を作成
+          const makeTr = document.createElement('tr');
+          toDoListArea.appendChild(makeTr);
+          //新規項目を追加する行を指定
+          const getTr = toDoListArea.getElementsByTagName('tr');
+          const newRow = getTr[taskList.length-1];
+
+          //新しいID、タスク、状態、削除ボタンを格納するtdをそれぞれ作成
+          const makeTdNumber = document.createElement('td');
+          const makeTdTaskName = document.createElement('td');
+          const makeTdStatusBtnArea = document.createElement('td');
+          const makeTdRemoveBtnArea = document.createElement('td');
+
+          //状態ボタン、削除ボタンを作成
+          const makeStatusBtn = document.createElement('button');
+          const makeRemoveBtn = document.createElement('button');
+
+          //ID、タスクを設定
+          makeTdNumber.textContent = taskList[taskList.length-1].number;
+          makeTdTaskName.textContent = taskList[taskList.length-1].taskName;
+
+          //状態ボタン、削除ボタンを設定
+          makeStatusBtn.textContent = '作業中';
+          makeRemoveBtn.textContent = '削除';
+
+          //各tdを指定した行に追加
+          newRow.appendChild(makeTdNumber);
+          newRow.appendChild(makeTdTaskName);
+          newRow.appendChild(makeTdStatusBtnArea);
+          newRow.appendChild(makeTdRemoveBtnArea);
+
+          //状態ボタン、削除ボタンを追加するtdをそれぞれ指定
+          const getTd = newRow.getElementsByTagName('td');
+          const statusBtnArea = getTd[2];
+          const removeBtnArea = getTd[3];
+
+          //状態ボタン、削除ボタンを指定したtdに追加
+          statusBtnArea.appendChild(makeStatusBtn);
+          removeBtnArea.appendChild(makeRemoveBtn);
+
+          //テキストボックスをクリア
+          task.value = '';
+
+        });
+
+    </script>
 
   </body>
 </html>
